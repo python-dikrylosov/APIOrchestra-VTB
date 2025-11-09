@@ -1,0 +1,4 @@
+# Требования для локальной ИИ-модели
+sentence-transformers==2.2.2
+torch==2.0.1
+transformers==4.30.0

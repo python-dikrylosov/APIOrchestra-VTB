@@ -1,0 +1,249 @@
+openapi: 3.0.3
+info:
+  title: Virtual Bank API
+  version: 2.0
+  description: API Виртуального банка для хакатона "Оркестр"
+servers:
+  - url: https://vbank.open.bankingapi.ru
+    description: Sandbox environment для Virtual Bank
+  - url: https://abank.open.bankingapi.ru
+    description: Sandbox environment для Awesome Bank
+  - url: https://sbank.open.bankingapi.ru
+    description: Sandbox environment для Smart Bank
+
+paths:
+  /auth/bank-token:
+    post:
+      summary: Получить токен доступа (Virtual Bank)
+      parameters:
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+            example: team111@app.hackaton.bankingapi.ru
+        - name: client_secret
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Ib6tWUSQspi5YTLzkvSrTo18x0I2Wdq3
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+
+  /auth/token:
+    post:
+      summary: Получить токен доступа (Smart Bank)
+      parameters:
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+            example: team111
+        - name: client_secret
+          in: query
+          required: true
+          schema:
+            type: string
+            example: Ib6tWUSQspi5YTLzkvSrTo18x0I2Wdq3
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  client_id:
+                    type: string
+                  algorithm:
+                    type: string
+                  expires_in:
+                    type: integer
+
+  /account-consents/request:
+    post:
+      summary: Создать согласие на доступ к счетам (Virtual Bank, Awesome Bank)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                  example: team111-01
+                permissions:
+                  type: array
+                  items:
+                    type: string
+                  example: ["accounts", "balances", "transactions"]
+                expire_time:
+                  type: string
+                  format: date-time
+                  example: "2026-11-08T12:00:00Z"
+      responses:
+        '201':
+          description: Успешно создано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  consent_id:
+                    type: string
+                    example: "consent-12345"
+
+  /consents/accounts:
+    post:
+      summary: Создать согласие на доступ к счетам (Smart Bank)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                  example: team111-01
+                permissions:
+                  type: array
+                  items:
+                    type: string
+                  example: ["accounts", "balances", "transactions"]
+                expire_time:
+                  type: string
+                  format: date-time
+                  example: "2026-11-08T12:00:00Z"
+      responses:
+        '201':
+          description: Успешно создано
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "consent-12345"
+
+  /accounts:
+    get:
+      summary: Получить список счетов
+      parameters:
+        - name: X-Consent-ID
+          in: header
+          required: true
+          schema:
+            type: string
+            example: consent-12345
+      responses:
+        '200':
+          description: Список счетов
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        account_id:
+                          type: string
+                        account_number:
+                          type: string
+                        currency:
+                          type: string
+                        status:
+                          type: string
+                        allowed_operations:
+                          type: array
+                          items:
+                            type: string
+
+  /payments:
+    post:
+      summary: Инициировать платеж
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_id:
+                  type: string
+                  example: "pay-67890"
+                amount:
+                  type: string
+                  example: "100.00"
+                currency:
+                  type: string
+                  example: "RUB"
+                consent_id:
+                  type: string
+                  example: "consent-12345"
+                debtor_account:
+                  type: string
+                  example: "test_account_1"
+      responses:
+        '201':
+          description: Платеж создан
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_id:
+                    type: string
+                  status:
+                    type: string
+                    example: "created"
+
+  /payments/{payment_id}:
+    get:
+      summary: Проверить статус платежа
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "pay-67890"
+      responses:
+        '200':
+          description: Статус платежа
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_id:
+                    type: string
+                  status:
+                    type: string
+                    example: "processed"
+                  processed_at:
+                    type: string
+                    format: date-time
