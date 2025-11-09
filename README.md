@@ -2,7 +2,6 @@
 
 > **Тестируй бизнес-процессы, а не эндпоинты. Без кода. С ИИ. Локально.**
 
-![APIOrchestra Demo](https://via.placeholder.com/800x400/1a1a2e/ffffff?text=APIOrchestra+Demo+Screenshot)
 
 **Автор**: Дмитрий Крылосов, Уфа, Россия  
 **Язык**: Java 17+ (Spring Boot), Python 3.x  
@@ -100,5 +99,6 @@
 - ✅ OpenAPI и BPMN — загружаются и анализируются
 - ✅ Отчёт — JSON с результатами тестирования
 - ✅ Без GPT, всё локально
+
 
 
