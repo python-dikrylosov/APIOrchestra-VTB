@@ -25,14 +25,23 @@
 
 ## 📁 Структура
 
-    api-orchestra/
-    ├── src/main/java/com/apiorchestra/Application.java
-    ├── src/main/resources/
-    │ ├── openapi.yaml # API Virtual Bank
-    │ └── process.bpmn # BPMN-диаграмма "Оформление кредита"
-    ├── src/main/python/virtual_bank_orchestrator.py
-    ├── pom.xml
-    └── target/api-orchestra-1.0.0.jar
+        api-orchestra-complete/
+        ├── src/
+        │ ├── main/
+        │ │ ├── java/
+        │ │ │ └── com/apiorchestra/Application.java
+        │ │ └── resources/
+        │ │ ├── application.yml
+        │ │ ├── openapi.yaml
+        │ │ └── process.bpmn
+        │ └── python/
+        │ └── virtual_bank_orchestrator.py
+        ├── pom.xml
+        ├── target/
+        │ └── api-orchestra-1.0.0.jar
+        └── docs/
+        ├── video-script.md
+        └── presentation.pdf
 
 
 ---
