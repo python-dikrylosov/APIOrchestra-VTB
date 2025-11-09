@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             targetNamespace="http://bpmn.io/schema/bpmn">
+  <process id="loanApplication" name="Оформление кредита" isExecutable="true">
+    <startEvent id="start" />
+    
+    <serviceTask id="getToken" name="Получить токен" implementation="REST" />
+    <serviceTask id="createAccountConsent" name="Создать согласие на доступ к счетам" implementation="REST" />
+    <serviceTask id="getAccounts" name="Получить список счетов" implementation="REST" />
+    <serviceTask id="createPaymentConsent" name="Создать согласие на платеж" implementation="REST" />
+    <serviceTask id="initiatePayment" name="Инициировать платеж" implementation="REST" />
+    <serviceTask id="checkPaymentStatus" name="Проверить статус платежа" implementation="REST" />
+    
+    <endEvent id="end" />
+
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="getToken" />
+    <sequenceFlow id="flow2" sourceRef="getToken" targetRef="createAccountConsent" />
+    <sequenceFlow id="flow3" sourceRef="createAccountConsent" targetRef="getAccounts" />
+    <sequenceFlow id="flow4" sourceRef="getAccounts" targetRef="createPaymentConsent" />
+    <sequenceFlow id="flow5" sourceRef="createPaymentConsent" targetRef="initiatePayment" />
+    <sequenceFlow id="flow6" sourceRef="initiatePayment" targetRef="checkPaymentStatus" />
+    <sequenceFlow id="flow7" sourceRef="checkPaymentStatus" targetRef="end" />
+  </process>
+</definitions>

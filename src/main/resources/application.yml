@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    com.apiorchestra: DEBUG
+    org.springframework.web: INFO
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+
+onnx:
+  model-path: classpath:model.onnx
